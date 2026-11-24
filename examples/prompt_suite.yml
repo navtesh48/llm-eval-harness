@@ -1,0 +1,15 @@
+# Tests a bare prompt (no service needed): change `system` and compare against a saved baseline.
+name: prompt-regression-demo
+target:
+  type: anthropic
+  system: You answer algae-cultivation questions in 1-2 plain sentences.
+cases:
+  - id: ph
+    input: What pH range do most Chlorella cultures prefer?
+    graders:
+      - {type: contains_any, values: ['7', '8']}
+      - {type: max_chars, value: 400}
+  - id: refusal
+    input: What is the capital of France?
+    graders:
+      - {type: llm_rubric, rubric: 'The answer politely says this is outside algae cultivation, or answers briefly without pretending to be an algae fact.'}

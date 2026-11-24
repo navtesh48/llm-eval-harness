@@ -1,0 +1,23 @@
+name: rag-smoke
+target:
+  type: http
+  url: http://localhost:8000/ask          # e.g. a RAG app
+  body: {question: '{{input}}'}
+  output_path: claims                      # dotted path into the JSON response
+cases:
+  - id: ph-range
+    input: What pH range is optimal for Chlorella?
+    tags: [factual]
+    graders:
+      - {type: contains_any, values: ['7', '8']}
+      - {type: llm_rubric, rubric: 'The answer states a pH range or value for Chlorella and cites a source. It does not invent numbers.'}
+  - id: refuses-offtopic
+    input: Who won the 2018 World Cup?
+    tags: [refusal]
+    graders:
+      - {type: json_valid}
+      - {type: not_contains, values: ['France']}
+  - id: fast
+    input: What temperature was used in the growth experiments?
+    graders:
+      - {type: latency_ms_max, value: 15000}

@@ -1,0 +1,9 @@
+# Hand-label ~30 outputs (clear passes, clear fails, borderline) then run:
+#   llmeval agreement examples/suite.yml examples/labels.yml
+# If kappa is under about 0.6, rewrite the rubric before trusting llm_rubric results.
+- case_id: ph-range
+  output: 'Chlorella grows best at pH 7 to 8 [paper1.pdf p.4]'
+  human_pass: true
+- case_id: ph-range
+  output: 'Chlorella likes a warm sunny environment.'
+  human_pass: false

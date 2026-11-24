@@ -1,0 +1,19 @@
+name: llm-eval
+on: [pull_request]
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Run eval against committed baseline
+        if: ${{ hashFiles('eval/baseline.json') != '' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: llmeval run examples/prompt_suite.yml --baseline eval/baseline.json --repeats 3 --no-cache
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: eval-report, path: runs/report.html, if-no-files-found: ignore}
