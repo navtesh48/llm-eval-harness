@@ -1,0 +1,15 @@
+[project]
+name = "llmeval"
+version = "0.1.0"
+description = "Regression tests for LLM apps: YAML cases, graders, LLM-as-judge, caching, HTML reports and a CI gate."
+requires-python = ">=3.11"
+dependencies = ["pydantic", "pyyaml", "httpx", "anthropic", "python-dotenv"]
+[project.optional-dependencies]
+dev = ["pytest"]
+[project.scripts]
+llmeval = "llmeval.cli:main"
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+[tool.setuptools.packages.find]
+where = ["src"]
