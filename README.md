@@ -17,7 +17,7 @@ A command-line tool that runs a test suite against any LLM app on every commit a
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e '.[dev]'
-cp .env.example .env 2>/dev/null; export ANTHROPIC_API_KEY=...   # only for the judge / anthropic target
+export ANTHROPIC_API_KEY=...        # only needed for the judge and the anthropic target
 
 llmeval run examples/prompt_suite.yml --repeats 3 --save-as-baseline eval/baseline.json
 llmeval run examples/prompt_suite.yml --repeats 3 --baseline eval/baseline.json   # exit 1 on regression
